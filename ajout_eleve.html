@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang = "fr" dir ="ltr">
+  <head>
+    <meta charset = "utf-8">
+    <title>Ajout d'un élève</title>
+  </head>
+  <body>
+
+    <form action = "valider_eleve.php" method = "post">
+      <table>
+        <tr>
+          <td><input type = "text" name = "prenom" placeholder = "Entrer votre prenom." required></td>
+        </tr>
+        <tr>
+          <td><input type="text" name = "nom" placeholder="Entrer votre nom." required></td>
+        </tr>
+        <tr>
+          <td>Date de naissance</td>
+          <td><input type="date" name = "dateNaiss" required></td>
+        </tr>
+        <table>
+          <input type="submit"  value="Ajouter">
+
+        </table>
+      </table>
+    </form>
+</html>
