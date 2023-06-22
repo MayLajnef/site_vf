@@ -9,18 +9,19 @@
     <form action = "valider_eleve.php" method = "post">
       <table>
         <tr>
-          <td><input type = "text" name = "prenom" placeholder = "Entrer votre prenom." required></td>
+          <td> <label for="prenom"> Votre prénom : </label> </td>
+          <td><input type = "text" id="prenom" name = "prenom" placeholder = "Entrer votre prenom." required></td>
         </tr>
         <tr>
-          <td><input type="text" name = "nom" placeholder="Entrer votre nom." required></td>
+          <td> <label for="nom"> Votre nom : </label> </td>
+          <td><input type="text" id="nom" name = "nom" placeholder="Entrer votre nom." required></td>
         </tr>
         <tr>
-          <td>Date de naissance</td>
-          <td><input type="date" name = "dateNaiss" required></td>
+          <td> <label for="dateNaiss"> Votre date de naissance : </label> </td>
+          <td><input type="date" id="dateNaiss" name = "dateNaiss" max="2023-06-22" required></td>
         </tr>
         <table>
           <input type="submit"  value="Ajouter">
-
         </table>
       </table>
     </form>
