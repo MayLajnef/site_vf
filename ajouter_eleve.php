@@ -19,26 +19,24 @@
     $requete_ajout_eleve = "insert into eleves values (null,'$nom_echap','$prenom_echap','$dateNaiss', '$date')";
 
 
-    echo "<br>$requete_ajout_eleve<br>";
-
-
     $ajout_eleve = mysqli_query($connect, $requete_ajout_eleve);
-    // $query utilise comme parametre de mysqli_query
-    // le test ci-dessous est desormais impose pour chaque appel de :
-    // mysqli_query($connect, $query);
-    if (!$result)
+
+    if (!$ajout_eleve)
     {
       echo "<br>Impossible d'ajouter l'élève. La requête a échoué. <br>  ".mysqli_error($connect);
       exit;
+    }
+    else 
+    {
+       echo "<p>L'élève $nom $prenom né(e) le $dateNaiss a bien été ajouté.</p>";
     }
     mysqli_close($connect);
   }
     else {
       echo "<br><br><subtitle>Redirection vers l'accueil ...</subtitle><br><br><br>";
-			echo "<META HTTP-EQUIV='refresh' CONTENT=5;URL='accueil.html'>";
+      echo "<META HTTP-EQUIV='refresh' CONTENT=5;URL='accueil.html'>";
       exit;
     }
   ?>
- // Tableau récapitulatif des informations de l'élève
   </body>
 </html>
