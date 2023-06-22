@@ -16,7 +16,7 @@
 		
 
 
-		$liste_eleves_de_seance = mysqli_query($connect,"SELECT * FROM inscription WHERE idseance = $seance");// requête pour avoir les lignes de la table inscription avec l'id de la séance choisie
+		$liste_eleves_de_seance = mysqli_query($connect,"SELECT * FROM inscription2 WHERE idseance = $seance");// requête pour avoir les lignes de la table inscription avec l'id de la séance choisie
 		$verif_nombre_eleves = mysqli_fetch_row($liste_eleves_de_seance);
 
 		$verif_max_seance_query = mysqli_query($connect,"SELECT * FROM seance WHERE idseance = $seance"); //requête pour obtenir les infos de la séance choisie
@@ -47,7 +47,7 @@
 
 					if (!$deja_inscrit)
 					{
-						$requete_inscription = "INSERT INTO inscription2 values ('$seance', '$eleve', '50');"; // Si il n'y est pas encore inscrit, on l'y inscrit via cette requête
+						$requete_inscription = "INSERT INTO inscription2 values ('$seance', '$eleve', null);"; // Si il n'y est pas encore inscrit, on l'y inscrit via cette requête
 
 						$inscription = mysqli_query($connect, $requete_inscription);
 
