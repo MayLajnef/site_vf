@@ -2,7 +2,8 @@
 <html lang="fr" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <link rel="stylesheet" href="themes.css">
+    <title>Ajout d'une séance</title>
   </head>
   <body>
     <?php
