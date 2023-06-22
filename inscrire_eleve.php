@@ -13,7 +13,7 @@
 		$seance=strtoupper($_POST['seance']);
     include ("connexion.php");
 
-		$i = 0;
+		
 
 
 		$liste_eleves_de_seance = mysqli_query($connect,"SELECT * FROM inscription WHERE idseance = $seance");// requête pour avoir les lignes de la table inscription avec l'id de la séance choisie
@@ -22,11 +22,7 @@
 		$verif_max_seance_query = mysqli_query($connect,"SELECT * FROM seance WHERE idseance = $seance"); //requête pour obtenir les infos de la séance choisie
 		$verif_max_seance = mysqli_fetch_array($verif_max_seance_query, MYSQLI_ASSOC);
 
-		while ($verif_nombre_eleves)
-		{
-			$i = $i +1; // Compteur d'élèves participants à la séance
-		}
-
+		effectif_seance = mysqli_num_rows($verif_nombre_eleves);
 
 		if(!$seance)
 		{
@@ -34,7 +30,7 @@
 		}
 		else
 		{
-			if ($verif_max_seance['EffMax'] <= $i) //On compare le nombre d'élèves déjà inscrits à l'effectif max
+			if ($verif_max_seance['EffMax'] <= $effectif_seance) // On compare le nombre d'élèves déjà inscrits à l'effectif max
 			{
 				echo "Erreur : la séance est complète.</br>";
 			}
@@ -46,12 +42,12 @@
 				}
 				else
 				{
-					$deja_inscrit_query = mysqli_query($connect,"SELECT * FROM inscription WHERE idseance = $seance and ideleve = $eleve"); //On sélectionne la ligne de la table inscription qui lie l'élève à la séance pour voir si il est déjà inscrit
+					$deja_inscrit_query = mysqli_query($connect,"SELECT * FROM inscription WHERE idseance = $seance and ideleve = $eleve"); // On sélectionne la ligne de la table inscription qui lie l'élève à la séance pour voir si il est déjà inscrit
 					$deja_inscrit = mysqli_fetch_row($deja_inscrit_query);
 
-					if(!$deja_inscrit)
+					if (!$deja_inscrit)
 					{
-						$requete_inscription = "INSERT INTO inscription values ('$seance', '$eleve', '50');"; // Si il n'y est pas encore inscrit, on l'y inscrit via cette requête
+						$requete_inscription = "INSERT INTO inscription2 values ('$seance', '$eleve', '50');"; // Si il n'y est pas encore inscrit, on l'y inscrit via cette requête
 
 						$inscription = mysqli_query($connect, $requete_inscription);
 
@@ -67,20 +63,19 @@
 						$seance_query = mysqli_query($connect,"SELECT * FROM seance WHERE idseance = '$seance';"); //requête pour obtenir les informations de la séance choisie
 						$seance_en_question = mysqli_fetch_array($seance_query, MYSQLI_ASSOC);
 
-						$theme_seance_query = mysqli_query($connect,"SELECT * FROM themes WHERE idtheme = $seance_en_question[4];");//requête pour obtenir les infos du thème de cette séance
+						$theme_seance_query = mysqli_query($connect,"SELECT * FROM themes WHERE idtheme = $seance_en_question['Idtheme'];");//requête pour obtenir les infos du thème de cette séance
 						$theme_seance_en_question = mysqli_fetch_array($theme_seance_query, MYSQLI_ASSOC);
 
-						//Affichage du récapitulatif
+						// Affichage du récapitulatif
 
-						echo "<corps>Monsieur / Madame </corps><subtitle>".$eleve_en_question['prenom']." ".$eleve_en_question['nom']." </subtitle>";
-						echo "<corps>a été ajouté à la séance du </corps><subtitle>".$seance_en_question['DateSeance']." </subtitle>";
-						echo "<corps> de </corps><subtitle>".$theme_seance_en_question['nom'].".</subtitle>";
+						echo "L'élève .$eleve_en_question['prenom']. .$eleve_en_question['nom']. a été inscrit à la séance du .$seance_en_question['DateSeance']. de .$theme_seance_en_question['nom']..</subtitle>";
+					
 
 						mysqli_close($connect);
 					}
 					else
 					{
-						echo "Erreur : cet élève est déjà inscrit à cette séance. </br>";
+						die("Erreur : cet élève est déjà inscrit à cette séance. </br>");
 					}
 				}
 			}
