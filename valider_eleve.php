@@ -6,7 +6,7 @@
 </head>
 
 <body>
-	<titres>Inscription</titres></br></br>
+	<h1>Ajout d'u élève</h1></br></br>
 	<?php
 	function retourner_formulaire ($msg) {
 		echo <<< EOT
@@ -16,7 +16,7 @@
 		EOT; }
 
 	// Sanity checks
-	$nom = $_POST['prenom']; 
+	$nom = $_POST['prenom'];
 	$prenom = $_POST['nom'];
 	$dateNaiss = $_POST['dateNaiss'];
 
@@ -39,10 +39,10 @@
 		die(retourner_formulaire("Le formulaire est incomplet. Vous avez oublié de renseigner la date de naissance de l'élève !"));
 	}
 
-	else if $dateNaiss_a_verifier > $date_actuelle {
+	else if ($dateNaiss_a_verifier > $date_actuelle) {
 		die(retourner_formulaire("Vous avez sélectionné une date de naissance dans le futur !"));
 	}
-	else 
+	else
 	{
 		include ('connexion.php');
 
@@ -57,7 +57,8 @@
 			echo "<table>";
 
 			echo "<FORM METHOD='POST' ACTION='ajouter_eleve.php' >";
-			echo "<tr><td><INPUT TYPE='radio' VALUE='1' NAME='choix' ID='choix1'><label for='choix1'>Oui</label></td><td><INPUT TYPE='radio' VALUE='0' NAME='choix' ID='choix2'><label for='choix2'>Non</label></td></tr>";
+			echo "<tr><td><INPUT TYPE='radio' VALUE='1' NAME='choix' ID='choix1'><label for='choix1'>Oui</label></td>";
+			echo "<td><INPUT TYPE='radio' VALUE='0' NAME='choix' ID='choix2'><label for='choix2'>Non</label></td></tr>";
 			echo "<input type='hidden' name='nom' value='".$nom."'>";
 			echo "<input type='hidden' name='prenom' value='".$prenom."'>";
 			echo "<input type='hidden' name='naissance' value='".$dateNaiss."'>";
@@ -65,18 +66,34 @@
 			echo "</form>";
 			echo "</table>";
 		}
-		else // Sinon, on demande juste confirmation des infos entrées
+		else // Sinon, on insère l'élève directement
 		{
-			echo "<FORM METHOD='POST' ACTION='ajouter_eleve.php' >";
-			echo "<input type='hidden' name='nom' value='".$nom."'>";
-			echo "<input type='hidden' name='prenom' value='".$prenom."'>";
-			echo "<input type='hidden' name='naissance' value='".$dateNaiss."'>";
-			echo "<tr><td><br><br><INPUT TYPE='submit' VALUE='Valider'></tr></td>";
-			echo "</table>";
-			echo "</form>";
-		}
+
+	    $nom_echap = mysqli_real_escape_string($connect, $nom);
+	    $prenom_echap = mysqli_real_escape_string($connect, $prenom);
+    	$date = date('Y-m-d');
+
+
+	    $requete_ajout_eleve = "insert into eleves values (null,'$nom_echap','$prenom_echap','$dateNaiss', '$date')";
+
+
+	    $ajout_eleve = mysqli_query($connect, $requete_ajout_eleve);
+
+	    if (!$ajout_eleve)
+	    {
+	      echo "<br>Impossible d'ajouter l'élève. La requête a échoué. <br>  ".mysqli_error($connect);
+				mysqli_close($connect);
+				echo "<br><br><subtitle>Redirection vers l'accueil ...</subtitle><br><br><br>";
+	      echo "<META HTTP-EQUIV='refresh' CONTENT=5;URL='accueil.html'>";
+				exit;
+	    }
+	    else
+	    {
+	       echo "<p>L'élève $nom $prenom né(e) le $dateNaiss a bien été ajouté.</p>";
+	    }
+	    mysqli_close($connect);
 	}
-    
+}
 	?>
 
 
